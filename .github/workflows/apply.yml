@@ -17,6 +17,8 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
     steps:
       - uses: actions/checkout@v2
+        with:
+           terraform_version: 0.12.25
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
