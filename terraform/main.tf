@@ -9,7 +9,7 @@ terraform {
     resource_group_name  = "githubrunterraform"
     storage_account_name = "storeterraformstatefile"
     container_name       = "tfstatedevops"
-    key                  = "tfstatedevops.tfstate"
+    key                  = "terraform.tfstate"
   }
 }
 
