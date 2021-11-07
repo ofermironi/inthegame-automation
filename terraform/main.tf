@@ -16,8 +16,7 @@ terraform {
 
 provider "azurerm" {
 #   version = "2.80.0
-  version = "~>2.0"
-  features {}
+   features {}
 }
 # Modules
 module "main_resource_group" {
