@@ -64,6 +64,6 @@ jobs:
 #        tf_actions_working_dir: "./terraform"
 
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
 
