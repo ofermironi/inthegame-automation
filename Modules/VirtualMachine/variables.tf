@@ -27,6 +27,12 @@ variable "vm_subnet" {
     default     = ""
 }
 
+
+variable "aks_sub_id"{
+    type        = string
+    default     = ""
+}
+
 variable "vm_size" {
     type        = string
     default     = ""
