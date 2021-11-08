@@ -1,0 +1,47 @@
+
+
+
+ 
+ 
+
+
+name: Build app and deploy to admindev3
+
+#on:
+ # push: 
+  #  branches: master
+on: [workflow_dispatch]
+jobs:
+  install-build-deploy:
+    runs-on: ubuntu-latest
+    env:
+#      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+#      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+#      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+#     ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+
+      AZURE_USER_ID: ${{ secrets.AZURE_USER_ID }}
+      AZURE_PASSWORD: ${{ secrets.AZURE_PASSWORD }}
+      AZURE_TENANT: ${{ secrets.AZURE_AD_TENANT_ID }}
+
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      
+      
+     - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+#        host: ${{ secrets.HOST }}
+#        username: ${{ secrets.USERNAME }}
+#        password: ${{ secrets.PASSWORD }}
+#        port: ${{ secrets.PORT }}
+        
+        host: "20.85.226.190"
+        username: "ofer"
+        password: "QWEasd112233"
+        port: 22
+        script: whoami
+
+ 
+________________________________________
+This email has been scanned for spam and viruses by Proofpoint Essentials. Click here to report this email as spam.
+
