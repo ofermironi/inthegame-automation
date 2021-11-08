@@ -1,8 +1,6 @@
- output "aks-subnet-name" {
-   value = azurerm_subnet.aks_subnet.name
+ output "vm-public-ip-address" {
+   value = module.vm1.public-ip-address
  }
 
 
-output "aks-subnet-id" {
-   value = azurerm_subnet.aks_subnet.id
- }
+
