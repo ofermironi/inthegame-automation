@@ -1,15 +1,5 @@
 
-
-
- 
- 
-
-
-name: Build app and deploy to admindev3
-
-#on:
- # push: 
-  #  branches: master
+name: remote ssh command
 on: [workflow_dispatch]
 jobs:
   install-build-deploy:
@@ -19,16 +9,17 @@ jobs:
 #      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
 #      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 #     ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
-
       AZURE_USER_ID: ${{ secrets.AZURE_USER_ID }}
       AZURE_PASSWORD: ${{ secrets.AZURE_PASSWORD }}
       AZURE_TENANT: ${{ secrets.AZURE_AD_TENANT_ID }}
-
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      
-      
- #-    name: executing remote ssh commands using password
-    uses: appleboy/ssh-action@master
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
       with:
         host: "20.85.226.190"
         username: "ofer"
@@ -37,12 +28,14 @@ jobs:
         script:
           whoami
           ls -al
+
 #        host: ${{ secrets.HOST }}
 #        username: ${{ secrets.USERNAME }}
 #        password: ${{ secrets.PASSWORD }}
 #        port: ${{ secrets.PORT }}
         
-
+#- name: executing remote ssh commands using ssh key
+  
 
  
 
