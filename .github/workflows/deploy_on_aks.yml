@@ -27,19 +27,22 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       
       
- #- name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@master
+ #-    name: executing remote ssh commands using password
+    uses: appleboy/ssh-action@master
       with:
+        host: "20.85.226.190"
+        username: "ofer"
+        password: "QWEasd112233"
+        port: 22
+        script:
+          whoami
+          ls -al
 #        host: ${{ secrets.HOST }}
 #        username: ${{ secrets.USERNAME }}
 #        password: ${{ secrets.PASSWORD }}
 #        port: ${{ secrets.PORT }}
         
-        host: "20.85.226.190"
-        username: "ofer"
-        password: "QWEasd112233"
-        port: 22
-        script: whoami
+
 
  
 
