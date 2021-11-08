@@ -23,7 +23,7 @@ resource "azurerm_network_interface" "nic01" {
 
   ip_configuration {
     name                          = "IPConfig1"
-    subnet_id                     = data.azurerm_subnet.vm_subnet.id
+    subnet_id                     = "${var.aks_sub_id}"
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.myterraformpublicip.id
   }
