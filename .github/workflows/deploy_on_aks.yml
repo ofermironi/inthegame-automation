@@ -27,7 +27,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       
       
-     - name: executing remote ssh commands using password
+ #- name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       with:
 #        host: ${{ secrets.HOST }}
