@@ -1,4 +1,3 @@
-
 terraform {
   backend "azurerm" {
     resource_group_name  = "githubrunterraform"
@@ -61,19 +60,33 @@ module "storageaccount2" {
     depends_on          = [module.main_resource_group]
 }
 
-module "Aks1" {
-    aks_name                = "${var.Project}-${var.Customer}-${var.Env}-3-aks" 
-    aks_node_pool_vm_size   = "Standard_D4s_v3" #User required to change for each project (from azure size list)
-    aks_os_disk_size_gb     = "128" #User required to change for each project
-    node_count              = "1" #User required to change for each project
-    aks_subnet              = "${var.Project}-${var.Customer}-${var.Env}-3-aks-subnet" #User required to change for each project (generally should be for AKS_subnet)
-    aks_sub_id              =  module.main_vnet.aks-subnet-id
-    source                  = "./Modules/Aks"
-    aks_vnet_01_name        = "${var.Project}-${var.Customer}-${var.Env}-spoke-vnet"
-    #acr_name                = "${var.Project}-${var.Customer}${var.Env}acr01"
-    Location                = "${var.Location}"
-    resource_group_name     = "${var.Project}-${var.Customer}-${var.Env}-rg"
-#    depends_on              = [module.main_vnet, module.Acr, module.main_resource_group]
-    depends_on              = [module.main_vnet, module.main_resource_group]
-}
+# module "Aks1" {
+#     aks_name                = "${var.Project}-${var.Customer}-${var.Env}-3-aks" 
+#     aks_node_pool_vm_size   = "Standard_D4s_v3" #User required to change for each project (from azure size list)
+#     aks_os_disk_size_gb     = "128" #User required to change for each project
+#     node_count              = "1" #User required to change for each project
+#     aks_subnet              = "${var.Project}-${var.Customer}-${var.Env}-3-aks-subnet" #User required to change for each project (generally should be for AKS_subnet)
+#     aks_sub_id              =  module.main_vnet.aks-subnet-id
+#     source                  = "./Modules/Aks"
+#     aks_vnet_01_name        = "${var.Project}-${var.Customer}-${var.Env}-spoke-vnet"
+#     #acr_name                = "${var.Project}-${var.Customer}${var.Env}acr01"
+#     Location                = "${var.Location}"
+#     resource_group_name     = "${var.Project}-${var.Customer}-${var.Env}-rg"
+# #    depends_on              = [module.main_vnet, module.Acr, module.main_resource_group]
+#     depends_on              = [module.main_vnet, module.main_resource_group]
+# }
 
+module "vm1" {
+    vm_name             = "${var.Project}-${var.Customer}-${var.Env}-aks-vnet"#User required to change for each project
+    vm_subnet           = "${var.Project}-${var.Customer}-${var.Env}-3-aks-subnet" #User required to change for each project (App_subnet / DB_subnet / SFTP_subnet)
+    vm_size             = "Standard_D4s_v3" #User required to change for each project (from azure size list)
+    managed_disk_type   = "Standard_LRS" #User required to change for each project (from azure size list)
+    admin_username      = "ofer" #User required to change for each project
+    admin_password      = "QWEasd112233" #User required to change for each project
+    source              = "./Modules/VirtualMachine"
+    vnet_01_name        = "${var.Project}-${var.Customer}-${var.Env}-vnet"
+#    backup_vault_name   = "${var.Project}-${var.Customer}-${var.Env}-bv"
+    Location            = "${var.Location}"
+    resource_group_name = "${var.Project}-${var.Customer}-${var.Env}-rg"
+    depends_on          = [module.main_vnet, module.main_resource_group]
+}
