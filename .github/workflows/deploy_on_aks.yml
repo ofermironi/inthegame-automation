@@ -22,7 +22,7 @@ jobs:
         password: "QWEasd112233"
         port: 22
         script:
-          whoami
+#          whoami
           ls -l
 
 #        host: ${{ secrets.HOST }}
