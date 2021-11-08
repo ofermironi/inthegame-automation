@@ -79,6 +79,7 @@ module "storageaccount2" {
 module "vm1" {
     vm_name             = "${var.Project}-${var.Customer}-${var.Env}-aks-vnet"#User required to change for each project
     vm_subnet           = "${var.Project}-${var.Customer}-${var.Env}-3-aks-subnet" #User required to change for each project (App_subnet / DB_subnet / SFTP_subnet)
+    aks_sub_id          =  module.main_vnet.aks-subnet-id
     vm_size             = "Standard_D4s_v3" #User required to change for each project (from azure size list)
     managed_disk_type   = "Standard_LRS" #User required to change for each project (from azure size list)
     admin_username      = "ofer" #User required to change for each project
