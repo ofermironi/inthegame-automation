@@ -45,7 +45,29 @@ jobs:
       run: terraform apply -auto-approve
     
     - name: Call terraform output
+      id: terraform-output
       run: |
-        echo "ofer"
-        output=$(terraform output admin_pswd)
-        echo $output
+        echo "ofer1"
+        
+        echo ${terraform output admin_pswd}
+        echo ::set-env name=admin_pass::${terraform output admin_pswd}
+        echo $admin_pass
+        
+        admin_user=${terraform output admin_username}
+        echo ::set-env name=admin_user::${terraform output admin_username}
+        echo $admin_user
+        
+        admin_user=${terraform output vm_public_ip_address}
+        echo ::set-env name=ip_address::${terraform output vm_public_ip_address}
+        echo $ip_address        
+        
+        
+        
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${terraform output vm_public_ip_address}
+        username: ${terraform output admin_username}
+        password: ${terraform output admin_pswd}
+        port: 22
+        script: whoami
