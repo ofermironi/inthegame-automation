@@ -1,4 +1,11 @@
- output "vm_public_ip_address" {
+output "aks_name" {
+  value = "${var.Project}-${var.Customer}-${var.Env}-3-aks"
+  }
+output "resource_group_name" {
+  value = "${var.Project}-${var.Customer}-${var.Env}-rg"
+  } 
+
+output "vm_public_ip_address" {
   value = data.azurerm_public_ip.public_ip.ip_address
   }
 
