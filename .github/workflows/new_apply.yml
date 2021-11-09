@@ -49,16 +49,19 @@ jobs:
       run: |
         echo "ofer1"
         
-        echo ${terraform output admin_pswd}
+        admin_psw= ${terraform output admin_pswd}
         echo ::set-env name=admin_pass::${terraform output admin_pswd}
+        echo $admin_psw
         echo $admin_pass
         
-        admin_user=${terraform output admin_username}
+        admin_use=${terraform output admin_username}
         echo ::set-env name=admin_user::${terraform output admin_username}
         echo $admin_user
+        echo $admin_use
         
-        admin_user=${terraform output vm_public_ip_address}
+        vm_pub_ip_address=${terraform output vm_public_ip_address}
         echo ::set-env name=ip_address::${terraform output vm_public_ip_address}
+        echo $vm_pub_ip_address
         echo $ip_address        
         
         
