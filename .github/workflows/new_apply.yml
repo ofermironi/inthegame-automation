@@ -46,11 +46,17 @@ jobs:
     
     
     - name: Call terraform output
+      id: terraform-output
       run: |
         echo "ofer3"
         output=$(terraform output admin_pswd)
         echo $output
-    
+        admin_user=$(terraform output admin_username)
+        echo $admin_user
+        admin_psw=$(terraform output admin_pswd)
+        echo $admin_psw
+        ip_address=$(terraform output vm_public_ip_address)
+        echo $ip_address
 
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
