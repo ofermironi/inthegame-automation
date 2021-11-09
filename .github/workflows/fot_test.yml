@@ -32,8 +32,8 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       with:
-        host: "52.149.230.147"
-        username: "ofer"
+        host: "40.71.99.42"
+        username: ofer
         password: "QWEasd112233"
         port: 22
         script: 
