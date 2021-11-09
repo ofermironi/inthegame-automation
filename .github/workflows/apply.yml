@@ -67,6 +67,7 @@ jobs:
       
       - name: Install AKS
         run: |
+           $ terraform output  
            admin_pass=${terraform output admin_pswd}
            echo $admin_pass
            admin_user=${terraform output admin_username}
