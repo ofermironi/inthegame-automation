@@ -52,12 +52,10 @@ jobs:
         echo ::set-env name=admin_pass::${terraform output admin_pswd}
         echo $output
         echo $admin_pass
-        
         admin_use=${terraform output admin_username}
         echo ::set-env name=admin_user::${terraform output admin_username}
         echo $admin_user
         echo $admin_use
-        
         vm_pub_ip_address=${terraform output vm_public_ip_address}
         echo ::set-env name=ip_address::${terraform output vm_public_ip_address}
         echo $vm_pub_ip_address
