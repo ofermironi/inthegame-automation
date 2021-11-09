@@ -1,4 +1,4 @@
-name: Terraform new-apply
+name: for test
 
 on: [workflow_dispatch]
 
