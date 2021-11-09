@@ -33,7 +33,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-            terraform_wrapper: true
+            terraform_wrapper: false
             terraform_version: 'latest'
 
       - name: Terraform Init
@@ -52,6 +52,7 @@ jobs:
         id: terraform-apply
         run: | 
             terraform apply --auto-approve
+            working-directory: ./path/to/dir
 #          Set-Location (Join-Path $env:GITHUB_WORKSPACE terraform) # Task does not support 'working-directory' property
 #            terraform apply --auto-approve
 #          # Export Terraform output as step output
@@ -64,10 +65,13 @@ jobs:
             
         
  #      - uses: actions/checkout@v2
-      
+      - name: Terraform Output
+        id: terraform-output
+        run: echo "::set-output name=admin_pass::$(terraform output admin_pswd)"
+        
       - name: Install AKS
         run: |
-          
+           working-directory: ./path/to/dir
            admin_pass=${terraform output admin_pswd}
            echo $admin_pass
             terraform output  
