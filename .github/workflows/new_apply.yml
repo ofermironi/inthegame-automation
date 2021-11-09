@@ -47,6 +47,7 @@ jobs:
     
     - name: Call terraform output
       run: |
+        echo "ofer3"
         output=$(terraform output admin_pswd)
         echo $output
     
