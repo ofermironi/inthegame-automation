@@ -43,5 +43,5 @@ jobs:
     
     - name: Call terraform output
       run: |
-        output=$(terraform output test)
+        output=$(terraform output admin_pswd)
         echo $output
