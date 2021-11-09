@@ -33,7 +33,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-            terraform_wrapper: false
+            terraform_wrapper: true
             terraform_version: 'latest'
 
       - name: Terraform Init
@@ -67,9 +67,10 @@ jobs:
       
       - name: Install AKS
         run: |
-           $ terraform output  
+          
            admin_pass=${terraform output admin_pswd}
            echo $admin_pass
+            terraform output  
            admin_user=${terraform output admin_username}
            echo $admin_user
 #           echo ${terraform output vm_public_ip_address}
