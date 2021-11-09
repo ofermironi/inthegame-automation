@@ -59,13 +59,12 @@ jobs:
       - name: Terraform Output
         id: terraform-output
         run: echo "::set-output name=admin_pass::$(terraform output admin_pswd)"
-        
-      - name: Install AKS
-        run: |
-           working-directory: ./path/to/dir
-           admin_pass=${terraform output admin_pswd}
-           echo $admin_pass
+            admin_pass=${terraform output admin_pswd}
+            echo $admin_pass
             terraform output  
            admin_user=${terraform output admin_username}
            echo $admin_user
-#           echo ${terraform output vm_public_ip_address}
+        
+ #     - name: Install AKS
+ #       run: |
+  
