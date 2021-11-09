@@ -49,9 +49,9 @@ jobs:
       id: terraform-output
       run: |
         echo "ofer3"
-        echo "::set-output name=admin_password::$(terraform output admin_pswd)"
-        echo "::set-output name=admin_user::$(terraform output admin_username)"
-        echo "::set-output name=ip_address::$(terraform output vm_public_ip_address)"
+        echo ::set-output name=admin_password::$(terraform output admin_pswd)
+        echo ::set-output name=admin_user::$(terraform output admin_username)
+        echo ::set-output name=ip_address::$(terraform output vm_public_ip_address)
 
     
     - name: disply terraform output
@@ -67,10 +67,9 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       with:
-        host:    $(terraform output vm_public_ip_address)
-        username: $(terraform output admin_username)
-        password: $(terraform output vm_public_ip_address)
-        port: 22
+        host:     ${{steps.terraform-output.outputs.ip_address}}
+        username: ${{steps.terraform-output.outputs.admin_user}}
+        password: ${{steps.terraform-output.outputs.admin_password}}
         script: 
           whoami ;
           ls -l ;
