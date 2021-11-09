@@ -48,10 +48,9 @@ jobs:
       id: terraform-output
       run: |
         echo "ofer1"
-        
-        admin_psw= ${terraform output admin_pswd}
+        output=${terraform output admin_pswd}
         echo ::set-env name=admin_pass::${terraform output admin_pswd}
-        echo $admin_psw
+        echo $output
         echo $admin_pass
         
         admin_use=${terraform output admin_username}
