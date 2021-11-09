@@ -44,25 +44,13 @@ jobs:
 #      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: terraform apply -auto-approve
     
+    
     - name: Call terraform output
-      id: terraform-output
       run: |
-        echo "ofer2"
-        output=${terraform output admin_pswd}
-        echo ::set-env name=admin_pass::${terraform output admin_pswd}
+        output=$(terraform output admin_pswd)
         echo $output
-        echo $admin_pass
-        admin_use=${terraform output admin_username}
-        echo ::set-env name=admin_user::${terraform output admin_username}
-        echo $admin_user
-        echo $admin_use
-        vm_pub_ip_address=${terraform output vm_public_ip_address}
-        echo ::set-env name=ip_address::${terraform output vm_public_ip_address}
-        echo $vm_pub_ip_address
-        echo $ip_address        
-        
-        
-        
+    
+
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       with:
