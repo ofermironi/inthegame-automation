@@ -68,8 +68,6 @@ jobs:
         ofer="$(terraform output admin_pswd)"
         echo $ofer
         
-        ofer1='$(terraform output admin_pswd)'
-        echo $ofer1
  #       echo "$(terraform output admin_pswd)"
         
     - name: executing remote ssh commands using password
@@ -78,6 +76,7 @@ jobs:
         host:     "${{  steps.terraform-output.outputs.ip_address  }}"
         username: "${{  steps.terraform-output.outputs.admin_user  }}"
         password: "${{  steps.terraform-output.outputs.admin_password  }}"
+        port:      22
         script: 
           whoami ;
           ls -l ;
