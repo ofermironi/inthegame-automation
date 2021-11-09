@@ -24,9 +24,9 @@ jobs:
       uses: actions/checkout@v2
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: login to azure
-      run: | 
-          az login --service-principal --username $oferm@cloudvalley.io --password "QWErty90()" --tenant "edb35e24-c305-4216-8a2e-3bc074765d16"
+    #- name: login to azure
+    #  run: | 
+    #      az login --service-principal --username $oferm@cloudvalley.io --password "QWErty90()" --tenant "edb35e24-c305-4216-8a2e-3bc074765d16"
 
 
     - name: executing remote ssh commands using password
