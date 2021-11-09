@@ -37,6 +37,6 @@ jobs:
         password: "QWEasd112233"
         port: 22
         script: 
-          whoami
-          ls -l 
+          whoami ;
+          ls -l ;
           pwd
