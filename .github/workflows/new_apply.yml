@@ -47,7 +47,7 @@ jobs:
     - name: Call terraform output
       id: terraform-output
       run: |
-        echo "ofer1"
+        echo "ofer2"
         output=${terraform output admin_pswd}
         echo ::set-env name=admin_pass::${terraform output admin_pswd}
         echo $output
