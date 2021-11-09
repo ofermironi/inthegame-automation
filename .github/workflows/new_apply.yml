@@ -68,6 +68,6 @@ jobs:
         password: ${{steps.terraform-output.outputs.admin_password}}
         port: 22
         script: 
-          whoami
-          ls -l 
+          whoami ;
+          ls -l ;
           pwd
