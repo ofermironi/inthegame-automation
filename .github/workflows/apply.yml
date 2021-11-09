@@ -5,7 +5,7 @@ on: [workflow_dispatch]
 #  push:
 #    branches:
 #    - main
-  pull_request:
+      
   
 defaults:
   run:
@@ -44,3 +44,12 @@ jobs:
         
       - name: Terraform Apply
         run: terraform apply --auto-approve
+
+
+      - uses: actions/checkout@v2
+      
+      - name: Install AKS
+        run: |
+           echo ${terraform output admin_pswd}
+           echo ${terraform output admin_username}
+           echo ${terraform output vm_public_ip_address}
