@@ -67,7 +67,7 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       with:
-        host:     '${{steps.terraform-output.outputs.ip_address}}'
+        host:    $(terraform output admin_pswd)
         username: '${{steps.terraform-output.outputs.admin_user}}'
         password: '${{steps.terraform-output.outputs.admin_password}}'
         port: 22
