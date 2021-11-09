@@ -1,12 +1,12 @@
-# terraform {
-#   backend "azurerm" {
-#     resource_group_name  = "githubrunterraform"
+ terraform {
+  backend "azurerm" {
+     resource_group_name  = "githubrunterraform"
     
-#     storage_account_name = "storeterraformstatefile"
-#     container_name       = "tfstatedevops"
-#     key                  = "terraform.tfstate"
-#   }
-# }
+     storage_account_name = "storeterraformstatefile"
+     container_name       = "tfstatedevops"
+     key                  = "terraform.tfstate"
+   }
+ }
 
 
 provider "azurerm" {
