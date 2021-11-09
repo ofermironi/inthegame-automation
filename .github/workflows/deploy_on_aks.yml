@@ -17,7 +17,7 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       with:
-        host: "20.85.226.190"
+        host: "52.149.230.147"
         username: "ofer"
         password: "QWEasd112233"
         port: 22
