@@ -2,10 +2,9 @@
 
  terraform {
    backend "azurerm" {
-     resource_group_name  = "githubrunterraform"
-    
-     storage_account_name = "storeterraformstatefile"
-     container_name       = "tfstatedevops"
+     resource_group_name  = "automation-resources-data-rg"
+     storage_account_name = "tfdatainthegame"
+     container_name       = "tfstatedevopsinthegame"
      key                  = "terraform.tfstate"
    }
  }
