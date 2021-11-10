@@ -49,23 +49,9 @@ resource "azurerm_subnet" "Lb_External" {
   address_prefixes     = ["${var.lb_subnet_cidr_address_space}"]
 }
 
-# resource "azurerm_subnet" "DB_subnet" {
-#   name                                            = "DB_subnet"
-#   resource_group_name                             = "${var.resource_group_name}"
-#   virtual_network_name                            = azurerm_virtual_network.vnet01.name
-#   address_prefixes                                = [cidrsubnet("${var.cidr_address_space}", 3, 1)]
-#   enforce_private_link_endpoint_network_policies  = true
-# }
 
-# resource "azurerm_subnet" "SFTP_subnet" {
-#   name                 = "SFTP_subnet"
-#   resource_group_name  = "${var.resource_group_name}"
-#   virtual_network_name = azurerm_virtual_network.vnet01.name
-#   address_prefixes     = [cidrsubnet("${var.cidr_address_space}", 3, 2)]
-  
-# }
 
-# # NSG
+# NSG
 # resource "azurerm_network_security_group" "nsg" {
 #   name                = "${var.nsg_name}"
 #   location            = "${var.Location}"
@@ -112,8 +98,8 @@ resource "azurerm_subnet" "Lb_External" {
 #   protocol                    = "*"
 #   source_port_range           = "*"
 #   destination_port_range      = "*"
-#   source_address_prefix       = var.cidr_address_space
-#   destination_address_prefix  = var.cidr_address_space
+#   source_address_prefix       = "*"
+#   destination_address_prefix  = var.aks_cidr_address_space
 #   resource_group_name         = "${var.resource_group_name}"
 #   network_security_group_name = "${var.nsg_name}"
 #   depends_on                  = [azurerm_network_security_group.nsg]
@@ -165,17 +151,24 @@ resource "azurerm_subnet" "Lb_External" {
 #   network_security_group_id = azurerm_network_security_group.nsg.id
 # }
 
-# # Creating Vnet peering between main Vnet to AKS Vnet
-# resource "azurerm_virtual_network_peering" "main-to-Aks" {
-#   name                      = "peer-main-to-Aks"
-#   resource_group_name       = "${var.resource_group_name}"
-#   virtual_network_name      = "${var.vnet_01_name}"
-#   remote_virtual_network_id = azurerm_virtual_network.aks_vnet01.id
-# }
+# Creating Vnet peering between main Vnet to AKS Vnet
+resource "azurerm_virtual_network_peering" "main-to-Aks" {
+  name                      = "peer-main-to-Aks"
+  resource_group_name       = "${var.resource_group_name_Hub}"
+  virtual_network_name      = "${var.vnet_name_Hub}"
+  remote_virtual_network_id = azurerm_virtual_network.aks_vnet01.id
+  depends_on               = [azurerm_virtual_network.aks_vnet01]
+}
+ 
+data "azurerm_virtual_network" "Hub_vnet" {
+  name                = "${var.vnet_name_Hub}"
+  resource_group_name = "${var.resource_group_name_Hub}"
+}
 
-# resource "azurerm_virtual_network_peering" "Aks-to-main" {
-#   name                      = "peer-Aks-to-main"
-#   resource_group_name       = "${var.resource_group_name}"
-#   virtual_network_name      = "${var.aks_vnet_01_name}"
-#   remote_virtual_network_id = azurerm_virtual_network.vnet01.id
-# }
+resource "azurerm_virtual_network_peering" "Aks-to-main" {
+  name                      = "peer-Aks-to-main"
+  resource_group_name       = "${var.resource_group_name}"
+  virtual_network_name      = "${var.aks_vnet_01_name}"
+  remote_virtual_network_id = data.azurerm_virtual_network.Hub_vnet.id
+   depends_on               = [azurerm_virtual_network.aks_vnet01]
+}

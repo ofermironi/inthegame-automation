@@ -58,3 +58,22 @@ variable "acr_name" {
     type        = string
     default     = ""   
 }
+variable "vnet_Hub_id" {
+    type        = string
+    default     = ""
+    description = "vnet hub name"
+ }
+
+
+variable "dns_name" {
+    type        = string
+    default     = ""
+    description = "vnet hub name"
+ }
+
+variable "aks_resource_group_name" {
+    type        = string
+    default     = ""
+    description = "aks resource group name"
+ } 
+  

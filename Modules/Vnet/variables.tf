@@ -75,13 +75,22 @@ variable "lb_subnet_cidr_address_space" {
     type        = string
     default     = ""
     description = "cidr address space for ask vnet"
- 
-}
+ }
 
 variable "nsg_name" {
     type        = string
     default     = ""
     description = "nsg name"
+ }
 
-   
-}
+variable "vnet_name_Hub" {
+    type        = string
+    default     = ""
+    description = "vnet hub name"
+ }
+
+variable "resource_group_name_Hub" {
+    type        = string
+    default     = ""
+    description = "vnet hub name"
+ }

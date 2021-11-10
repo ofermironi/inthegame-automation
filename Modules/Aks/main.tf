@@ -5,12 +5,23 @@
 #   resource_group_name  = "${var.resource_group_name}"
 # }
 
+
+# resource "azurerm_private_dns_zone" "aks_private_dns_zone" {
+#   name                = "${var.dns_name}.privatelink.eastus.azmk8s.io"
+#   resource_group_name = "${var.resource_group_name}"
+# }
+
+
+
+
+
 resource "azurerm_kubernetes_cluster" "aks" {
   name                    = "${var.aks_name}"
   location                = "${var.Location}"
   resource_group_name     = "${var.resource_group_name}"
   dns_prefix              = "${var.aks_name}"
   private_cluster_enabled = true
+  #private_dns_zone_id     = azurerm_private_dns_zone.aks_private_dns_zone.id
 
   default_node_pool {
   name                  = "apppool"
@@ -69,3 +80,13 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodepool1" {
 #   principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity.0.object_id
 #   skip_service_principal_aad_check = true
 # }
+# resource "azurerm_private_dns_zone_virtual_network_link" "link_to_hub_vnet" {
+# name = "link_to_hub_vnet"
+# private_dns_zone_name = join(".", slice(split(".",azurerm_kubernetes_cluster.aks.private_fqdn), 1, length(split(".",azurerm_kubernetes_cluster.aks.private_fqdn))))
+# #private_dns_zone_name = azurerm_private_dns_zone.aks_private_dns_zone.name
+# resource_group_name   = var.aks_resource_group_name
+# virtual_network_id    = var.vnet_Hub_id
+# depends_on = [azurerm_kubernetes_cluster.aks]
+# }
+
+
