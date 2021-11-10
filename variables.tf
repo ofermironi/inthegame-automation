@@ -73,3 +73,14 @@ variable "aks_subnet" {
     default     = "QWEasd112233"
 }
  
+ variable "vnet_hub" {
+    type        = string
+    default     = "Best_practice-vnet"
+    description = "vnet hub name"
+ }
+
+ variable "rg_hub_name" {
+    type        = string
+    default     = "Best_practice"
+    description = "vnet hub name"
+ }
