@@ -1,0 +1,101 @@
+name: Automation environment apply
+
+#on: [workflow_dispatch]
+on: 
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'insert environment to create'
+        required: true
+        default: 'prod/uat/dev/test'
+
+jobs:
+  terraform:
+    name: 'Terraform'
+#    runs-on: ubuntu-latest
+    runs-on: azure-new-gh-runner
+    env:
+
+      ARM_CLIENT_ID: ${{ secrets.AZURE_USER_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT }}
+      ARM_CLIENT_SECRET : ${{ secrets.AZURE_PASSWORD }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION}}
+      
+    defaults:
+     run:
+        shell: bash
+        working-directory:  ./terraform
+
+    steps:
+    - name: cleanup #https://github.com/actions/checkout/issues/211
+      run: |
+         sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+         
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: check
+      run: |
+        echo "going to deploy to ${{ github.event.inputs.env }}!"
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_wrapper: false
+
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+ 
+    - name: terraform create env   
+      run:  terraform workspace new ${{ github.event.inputs.env }}    &> /dev/null ; echo $? 
+
+  #  - name: terraform switch env 
+  #    run:  terraform workspace select  ${{ github.event.inputs.env }} 
+  
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan  -var="Env=${{ github.event.inputs.env }}"  
+
+      # On push to master, build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Apply
+#      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: terraform apply -var="Env=${{ github.event.inputs.env }}"  -auto-approve
+    
+    - name: Call terraform output
+      id: terraform-output
+      run: |
+        echo ::set-output name=AKS_NAME::$(terraform output aks_name)
+        echo ::set-output name=RG::$(terraform output resource_group_name)
+        echo ::set-output name=MONGODB_IP::$(terraform output mongo_ip)
+    - name: disply terraform output
+      run: | 
+             echo ${{steps.terraform-output.outputs.AKS_NAME}};
+             echo ${{steps.terraform-output.outputs.RG}} ;
+             echo ${{steps.terraform-output.outputs.MONGODB_IP}} ;
+             az login --service-principal --username $ARM_CLIENT_ID --password $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID ;
+             echo "After Az login"
+             az aks get-credentials --resource-group ${{steps.terraform-output.outputs.RG}} --name ${{steps.terraform-output.outputs.AKS_NAME}} --admin --overwrite-existing; 
+             echo "After get-credentioal"
+             az aks get-credentials --resource-group ${{steps.terraform-output.outputs.RG}} --name ${{steps.terraform-output.outputs.AKS_NAME}} --admin --overwrite-existing --file ~/.kube/${{steps.terraform-output.outputs.AKS_NAME}}.yaml;
+             echo "After get-credentials to file"
+             sudo kubectl create namespace php-itg-dev;
+             echo "After create name-spaces"
+             sudo helm repo add bitnami https://charts.bitnami.com/bitnami;
+             sudo helm install my-replica-mongodb  --set  architecture="replicaset",replicaCount=3 --set auth.rootPassword="mongoadmin",auth.username="mongoadmin",auth.password="mongoadmin",auth.database=my-database bitnami/mongodb -n php-itg-dev;
+             echo "After install mongo-db";
+             sudo helm install my-replica-redis  --set  architecture="replication",replicaCount=3 --set global.redis.password="7IlyHppyXS" bitnami/redis -n php-itg-dev;
+             sudo kubectl create namespace ingress-basic;
+             sudo helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx;
+             sudo helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ingress-basic -f internal-ingress.yaml --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux;
+             sudo helm install my-redis --set global.redis.password="7IlyHppyXS" bitnami/redis -n php-itg-dev;
+            # sudo helm install my-mongodb --set auth.rootPassword="mongoadmin",auth.username="mongoadmin",auth.password="mongoadmin",auth.database=my-database bitnami/mongodb -n php-itg-dev;
+            # sudo mongodump --host ${{steps.terraform-output.outputs.MONGODB_IP}} --authenticationDatabase admin -u root -p mongoadmin --forceTableScan -o /mongotemp/
+            # kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=my-mongodb -n php-itg-dev 
+            # TargetIp=$(kubectl get pods -n php-itg-dev -l app.kubernetes.io/instance=my-mongodb -o=jsonpath="{.items[0].status.podIP}")
+            # sudo mongorestore --host $TargetIp --authenticationDatabase admin -u root -p mongoadmin /mongotemp/
+            
+ 
